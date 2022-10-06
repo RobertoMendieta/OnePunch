@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="onePunchModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'onePunch.dbo.CarritoDeCompras' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CarritoDeCompras">
+          <Property Name="prodAdded" Type="datetime" />
+          <Property Name="productoID" Type="int" />
+        </EntityType>-->
+  <EntityType Name="Categoria">
+    <Key>
+      <PropertyRef Name="categoriaID" />
+    </Key>
+    <Property Name="categoriaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoriaPR" Type="nvarchar" MaxLength="50" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="100" />
+    <Property Name="image" Type="bit" />
+  </EntityType>
+  <EntityType Name="Persona">
+    <Key>
+      <PropertyRef Name="idPersona" />
+    </Key>
+    <Property Name="idPersona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombres" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="apellidos" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="direccion" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="fechaNacimiento" Type="date" Nullable="false" />
+    <Property Name="telefono" Type="nvarchar" MaxLength="11" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="productoID" />
+    </Key>
+    <Property Name="productoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="existencias" Type="int" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="50" />
+    <Property Name="image" Type="bit" />
+    <Property Name="nombrePr" Type="nvarchar" MaxLength="50" />
+    <Property Name="categoriaID" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'onePunch.dbo.productoSelect' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="productoSelect">
+          <Property Name="cantidad" Type="int" />
+          <Property Name="precio" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="size" Type="nvarchar" MaxLength="10" />
+          <Property Name="productoID" Type="int" />
+        </EntityType>-->
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="idUsuario" />
+    </Key>
+    <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombreUsuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="pwUsuario" Type="varbinary" MaxLength="50" Nullable="false" />
+    <Property Name="idPersona" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+error 6004: The table 'onePunch.dbo.CarritoDeCompras' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__CarritoDe__produ__36B12243" />-->
+  <Association Name="FK__Producto__catego__32E0915F">
+    <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categoria">
+        <PropertyRef Name="categoriaID" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="categoriaID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+error 6004: The table 'onePunch.dbo.productoSelect' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__productoS__produ__34C8D9D1" />-->
+  <Association Name="FK__Usuario__idPerso__2C3393D0">
+    <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persona">
+        <PropertyRef Name="idPersona" />
+      </Principal>
+      <Dependent Role="Usuario">
+        <PropertyRef Name="idPersona" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="onePunchModelStoreContainer">
+    <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Producto__catego__32E0915F" Association="Self.FK__Producto__catego__32E0915F">
+      <End Role="Categoria" EntitySet="Categoria" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Usuario__idPerso__2C3393D0" Association="Self.FK__Usuario__idPerso__2C3393D0">
+      <End Role="Persona" EntitySet="Persona" />
+      <End Role="Usuario" EntitySet="Usuario" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
